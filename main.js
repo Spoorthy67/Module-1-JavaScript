@@ -1,30 +1,24 @@
-// Step 5: Objects and Prototypes
+// Step 6: Arrays and Methods
 
-// Define Event class
-class Event {
-  constructor(name, date, seats, category) {
-    this.name = name;
-    this.date = new Date(date);
-    this.seats = seats;
-    this.category = category;
-  }
+// 1. Add new events using .push()
+const extraEvents = [
+  new Event("Music Fest", "2025-06-18", 40, "Music"),
+  new Event("Baking Workshop", "2025-06-12", 20, "Cooking"),
+  new Event("Live Jazz", "2025-06-22", 25, "Music")
+];
 
-  // Add method to prototype to check availability
-  checkAvailability() {
-    const today = new Date("2025-05-27");
-    return this.date >= today && this.seats > 0;
-  }
-}
+events.push(...extraEvents);
+console.log("🎉 Extra events added.");
 
-// Create instances of Event
-const event1 = new Event("Community Yoga", "2025-06-05", 15, "Health");
-const event2 = new Event("Art Workshop", "2025-05-20", 0, "Art");
+// 2. Filter only music events
+const musicEvents = events.filter(event => event.category === "Music");
+console.log("🎶 Music Events:");
+musicEvents.forEach(e => console.log(`- ${e.name}`));
 
-// Add to events array
-events.push(event1, event2);
+// 3. Format event names using .map()
+const formattedEventTitles = events.map(event => {
+  return `Event: ${event.name} | Type: ${event.category}`;
+});
 
-// Display details using Object.entries()
-function displayEventDetails(eventObj) {
-  console.log(`📋 Details for "${eventObj.name}":`);
-  for (const [key, value] of Object.entries(eventObj)) {
-    console.log(`${key}: ${value in
+console.log("📝 Formatted Event List:");
+formattedEventTitles.forEach(title => console.log(title));
