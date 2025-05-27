@@ -1,24 +1,55 @@
-// Step 6: Arrays and Methods
+// Step 7: DOM Manipulation
 
-// 1. Add new events using .push()
-const extraEvents = [
-  new Event("Music Fest", "2025-06-18", 40, "Music"),
-  new Event("Baking Workshop", "2025-06-12", 20, "Cooking"),
-  new Event("Live Jazz", "2025-06-22", 25, "Music")
-];
+// Select the container
+const eventsContainer = document.querySelector("#eventsContainer");
 
-events.push(...extraEvents);
-console.log("🎉 Extra events added.");
+// Function to render events
+function renderEvents() {
+  eventsContainer.innerHTML = ""; // Clear previous content
 
-// 2. Filter only music events
-const musicEvents = events.filter(event => event.category === "Music");
-console.log("🎶 Music Events:");
-musicEvents.forEach(e => console.log(`- ${e.name}`));
+  events.forEach(event => {
+    // Create card
+    const card = document.createElement("div");
+    card.style.border = "1px solid #ccc";
+    card.style.padding = "10px";
+    card.style.margin = "10px 0";
 
-// 3. Format event names using .map()
-const formattedEventTitles = events.map(event => {
-  return `Event: ${event.name} | Type: ${event.category}`;
-});
+    // Event title
+    const title = document.createElement("h3");
+    title.textContent = event.name;
+    card.appendChild(title);
 
-console.log("📝 Formatted Event List:");
-formattedEventTitles.forEach(title => console.log(title));
+    // Date
+    const date = document.createElement("p");
+    date.textContent = `Date: ${event.date.toDateString()}`;
+    card.appendChild(date);
+
+    // Category
+    const category = document.createElement("p");
+    category.textContent = `Category: ${event.category}`;
+    card.appendChild(category);
+
+    // Seats
+    const seats = document.createElement("p");
+    seats.textContent = `Seats Available: ${event.seats}`;
+    card.appendChild(seats);
+
+    // Register Button
+    const btn = document.createElement("button");
+    btn.textContent = "Register";
+    btn.disabled = event.seats <= 0;
+    btn.onclick = () => {
+      if (event.seats > 0) {
+        event.seats--;
+        renderEvents(); // Refresh the UI
+      }
+    };
+    card.appendChild(btn);
+
+    // Append card to container
+    eventsContainer.appendChild(card);
+  });
+}
+
+// Initial render
+renderEvents();
