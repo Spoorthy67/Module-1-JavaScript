@@ -1,72 +1,30 @@
-// Step 4: Functions, Scope, Closures, Higher-Order Functions
+// Step 5: Objects and Prototypes
 
-// 1. Function to add a new event
-function addEvent(name, date, seats, category) {
-  const newEvent = {
-    name,
-    date: new Date(date),
-    seats,
-    category
-  };
-  events.push(newEvent);
-  console.log(`➕ Event "${name}" added.`);
-}
-
-// 2. Function to register user with error handling
-function registerUser(eventName) {
-  const event = events.find(e => e.name === eventName);
-  if (!event) {
-    console.error("❗ Event not found");
-    return;
+// Define Event class
+class Event {
+  constructor(name, date, seats, category) {
+    this.name = name;
+    this.date = new Date(date);
+    this.seats = seats;
+    this.category = category;
   }
-  if (event.date < today) {
-    console.warn("⏰ Can't register: Event already passed.");
-    return;
+
+  // Add method to prototype to check availability
+  checkAvailability() {
+    const today = new Date("2025-05-27");
+    return this.date >= today && this.seats > 0;
   }
-  if (event.seats <= 0) {
-    console.warn("🚫 No seats available.");
-    return;
-  }
-  event.seats--;
-  console.log(`✅ Registered for "${event.name}". Seats left: ${event.seats}`);
 }
 
-// 3. Function to filter by category
-function filterEventsByCategory(category) {
-  return events.filter(event => event.category === category);
-}
+// Create instances of Event
+const event1 = new Event("Community Yoga", "2025-06-05", 15, "Health");
+const event2 = new Event("Art Workshop", "2025-05-20", 0, "Art");
 
-// 4. Closure to track total registrations by category
-function createCategoryTracker() {
-  const categoryCount = {};
-  return function register(category) {
-    if (categoryCount[category]) {
-      categoryCount[category]++;
-    } else {
-      categoryCount[category] = 1;
-    }
-    console.log(`📊 Total registrations in "${category}": ${categoryCount[category]}`);
-  };
-}
+// Add to events array
+events.push(event1, event2);
 
-const trackRegistrationByCategory = createCategoryTracker();
-
-// Example usage
-addEvent("Tech Meetup", "2025-06-20", 30, "Technology");
-addEvent("Music Night", "2025-06-15", 20, "Music");
-
-registerUser("Tech Meetup");
-trackRegistrationByCategory("Technology");
-
-registerUser("Music Night");
-trackRegistrationByCategory("Music");
-
-// 5. Higher-order function with callback for custom filtering
-function dynamicFilter(callback) {
-  return events.filter(callback);
-}
-
-// Example: Filter events with more than 30 seats
-const spaciousEvents = dynamicFilter(event => event.seats > 30);
-console.log("🪑 Events with more than 30 seats:");
-spaciousEvents.forEach(e => console.log(`- ${e.name} (${e.seats} seats)`));
+// Display details using Object.entries()
+function displayEventDetails(eventObj) {
+  console.log(`📋 Details for "${eventObj.name}":`);
+  for (const [key, value] of Object.entries(eventObj)) {
+    console.log(`${key}: ${value in
